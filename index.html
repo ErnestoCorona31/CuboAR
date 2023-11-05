@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SER</title>
+    <meta name="description" content="A-Frame Environment Component">
+    <meta name="author" content="SER">
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@9a611ec968ce8edfd2fa7da68ead0fe70dc0c0df/dist/aframe-master.min.js"></script>
+    <script src="dist/aframe-environment-component.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Voces" rel="stylesheet">
+
+
+    <title>Video</title>
+    <meta name="description" content="A-Frame Video">
+    <script src="js/aframe-master-v1.3.0.min.js"></script>
+
+    <style>
+      h1 {
+        position: absolute;
+        z-index: 7000;
+        bottom: 30px;
+        left: 40%;
+        left: calc( 50% - 160px );
+        margin: 0;
+        font: 28px 'Voces', sans-serif;
+        color: #000;
+      }
+      h1 b{
+        color: white;
+        text-shadow: 1px 2px 0px black;
+        width: 300px;
+        display: inline-block;
+        text-align: center;
+      }
+      #about {
+        display: none;
+        position: absolute;
+        z-index: 7001;
+        width: 300px;
+        top: 40px;
+        left: 40px;
+        font: 14px 'Voces', Arial, sans-serif;
+        color: white;
+        line-height: 1.3rem;
+        background: rgba(0,0,0,0.2);
+        padding: 1rem;
+        box-sizing: border-box;
+      }
+      #about b{
+          font-weight: bold;
+          font-family: monospace;
+      }
+      #about p:last-child{
+        margin: 0;
+      }
+      #about a{
+        font-size: 14px;
+        color: #000;
+        font-weight: bold;
+        text-decoration: none;
+        transition: border-bottom-width 0.1s;
+        display: inline-block;
+        background: rgba(255,255,255,0.4);
+        padding: 0 3px;
+      }
+      #about a:hover{
+        background: rgba(255,255,255,1);
+      }
+      h1 a{
+        color: white;
+        text-decoration: none;
+        text-shadow: 1px 2px 0px black;
+        font-size: 20px;
+      }
+
+    @media (max-width: 400px), (max-height: 300px) {
+      #about {
+        left: 5%;
+        top: 5%;
+        width: 90%;
+      }
+      h1 {
+        left: 5%;
+      }
+      h1 b {
+        width: auto;
+      }
+    }
+    </style>
+  </head>
+  <body>
+
+    <a-scene>
+      <a-assets>
+          <video id="mivideo" autoplay loop="true"
+          src="verde.mp4"></video>
+      </a-assets>
+
+      <a-video src="#mivideo" width="20" radius="70" height="10" position="0 0 -20"></a-video>
+  </a-scene>
+
+    <a-asset-item id="Leche Blur JMMR-obj" src="Rabbit.obj"></a-asset-item>
+<a-asset-item id="Leche Blur JMMR-mtl" src="Rabbit.mtl"></a-asset-item>
+</a-assets>
+<a-entity environment="preset: tron; dressingAmount: 500"></a-entity>
+
+<a-entity obj-model="obj: #Rabbit-obj; mtl: #Rabbit-mtl" 
+scale= "1 1 1" position="-3 3 -7" rotation= "2 -10 1">    
+</a-entity>
+
+    <div id="about">
+    </div>
+    <h1>
+      <a class="previousPreset" href="#">&larr;</a>
+      <b>NARANJA</b>
+      <a class="nextPreset" href="#">&rarr;</a>
+    </h1>
+
+    <script>
+
+      AFRAME.registerComponent('preset-switcher', {
+        init: function () {
+          var el = this.el;
+          var presets = ['arches'];
+          var preset = 0;
+
+          window.addEventListener('keydown', function (evt) {
+            if (evt.keyCode == 32) {
+              nextPreset(1);
+            }
+          });
+
+          document.querySelector('.previousPreset').addEventListener('click', function () {
+            nextPreset(-1);
+          });
+
+          document.querySelector('.nextPreset').addEventListener('click', function () {
+            nextPreset(1);
+          });
+
+          function nextPreset(dir) {
+            if (preset === 0 && dir === -1) {
+              preset = presets.length - 1;
+            }
+            else {
+              preset = (preset + dir) % presets.length;
+            }
+            document.querySelector('h1 b').innerHTML = presets[preset];
+            el.setAttribute('environment', {preset: presets[preset]});
+          };
+        }
+      });
+    </script>
+
+    <a-scene overlay-visibility>
+
+      <a-entity environment="preset: arches" preset-switcher id="environment"></a-entity>
+
+    </a-scene>
+
+
+  <script>
+    // google analytics
+    var _gaq = [['_setAccount', 'UA-5753152-1'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+
+</script>
+
+</html>
